@@ -18,39 +18,68 @@ btnPopup.addEventListener('click', () => {
 iconClose.addEventListener('click', () => {
     wrapper.classList.remove('active-popup');
 });
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.querySelector(".form-box.login form");
+    const registerForm = document.querySelector(".form-box.register form");
 
-    loginForm.addEventListener("submit", function(e) {
-        e.preventDefault(); // ngăn reload
+    // Login
+    loginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
 
-        // Lấy username và password từ input
-        const username = loginForm.querySelector('input[type="text"]').value;
-        const password = loginForm.querySelector('input[type="password"]').value;
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
 
-        // Gửi lên server NodeJS
+        console.log("Submitting login:", username, password);
+
         fetch('http://localhost:3000/login', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: username,
-                password: password
-            })
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ username, password })
         })
-        .then(response => response.json())
+        .then(res => res.json())
         .then(data => {
             if (data.success) {
                 alert("Login successful!");
-                // M có thể redirect window.location = "home.html" ở đây
+                window.location.href = "http://localhost:3000/download";
             } else {
                 alert("Login failed: " + data.message);
             }
         })
-        .catch(error => {
-            console.error('Error:', error);
-            alert("Error connecting to server");
+        .catch(err => {
+            console.error("Fetch error:", err);
+            alert("Error connecting to server.");
+        });
+    });
+
+    // Register
+    registerForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const username = registerForm.querySelector('input[type="text"]').value;
+        const password = registerForm.querySelector('input[type="password"]').value;
+
+        console.log("Submitting register:", username, password);
+
+        fetch('http://localhost:3000/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ username, password })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert("Registration successful!");
+                // Optionally, switch to login form automatically
+                document.querySelector('.wrapper').classList.remove('active');
+            } else {
+                alert("Registration failed: " + data.message);
+            }
+        })
+        .catch(err => {
+            console.error("Fetch error:", err);
+            alert("Error connecting to server.");
         });
     });
 });
