@@ -8,8 +8,8 @@ const port = 3000;
 
 // Middleware
 app.use(cors({
-    origin: ['http://localhost:5500','http://127.0.0.1:5500','https://socket-ca4z.onrender.com'], // frontend URL
-    credentials: true // cho phép gửi cookie
+    origin: ['http://localhost:5500','http://127.0.0.1:5500','https://socket-ca4z.onrender.com'], 
+    credentials: true 
 }));
 app.use(express.static('public'));
 app.use(express.json());
@@ -19,7 +19,6 @@ app.use(session({
     saveUninitialized: false
 }));
 
-// Dummy user database
 const users = [
     { username: 'admin', password: '123' },
     { username: 'test', password: '456' }
