@@ -11,6 +11,7 @@ app.use(cors({
     origin: ['http://localhost:5500','http://127.0.0.1:5500'], // frontend URL
     credentials: true // cho phép gửi cookie
 }));
+app.use(express.static('public'));
 app.use(express.json());
 app.use(session({
     secret: 'mysecretkey',
@@ -65,9 +66,4 @@ app.get('/download', (req, res) => {
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
-});
-const path = require('path');
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
 });
